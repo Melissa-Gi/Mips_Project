@@ -5,9 +5,7 @@
     fin:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//sample_images//house_64_in_ascii_cr.ppm"     # filename for reading (created outside the program)
     fout:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//output_image.ppm"
     buffer: .space 3  
-    max: .asciiz "255"
     header: .asciiz "P3\n# Hse\n64 64\n"
-    newLine: .asciiz "\n"   #this is 10 in decimal
     originalAvg: .asciiz "Average pixel value of the original image:"
     brightAvg: .asciiz "Average pixel value of new image:"
     oAvg: .float 0.0
@@ -147,14 +145,14 @@ output:
     la $a0, originalAvg
     syscall
     li $v0,3
-    div $f12,$s0,$t5
+    div.d $f12,$s0,$t5
     syscall
     #Average of brightened image
     li $v0,4
     la $a0, brightAvg
     syscall
     li $v0,3
-    div.s $f12,$s5,$t5
+    div.d $f12,$s5,$t5
     syscall
 
     #Write non-padded pixel outputs
