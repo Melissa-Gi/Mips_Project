@@ -5,9 +5,9 @@
     fin:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//sample_images//house_64_in_ascii_cr.ppm"     # filename for reading (created outside the program)
     fout:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//output_image.ppm"
     buffer: .space 3  
-    header: .asciiz "P3\n# Hse\n64 64\n"
-    originalAvg: .asciiz "Average pixel value of the original image:"
-    brightAvg: .asciiz "Average pixel value of new image:"
+    header: .asciiz "P3\n# Hse\n64 64\n255\n"
+    originalAvg: .asciiz "Average pixel value of the original image:\n"
+    brightAvg: .asciiz "\nAverage pixel value of new image:\n"
     oAvg: .float 0.0
     bAvg: .float 0.0
 
@@ -26,7 +26,7 @@ main:
     li   $v0, 15       # system call for write to file
     move $a0, $s6      # file descriptor 
     la   $a1, header   # address of buffer from which to write
-    li   $a2, 15       # hardcoded buffer length
+    li   $a2, 19       # hardcoded buffer length
     syscall            # write to file
 
     # Open input file for reading
@@ -41,7 +41,7 @@ main:
     li   $v0, 14       # system call for write to file
     move $a0, $s7      # file descriptor 
     la $a1, buffer   # address of buffer from which to write
-    li   $a2, 15       # hardcoded buffer length
+    li   $a2, 19       # hardcoded buffer length
     syscall            # read file
 
     j loopRead
@@ -139,25 +139,11 @@ doCalculation:
     j output
 
 output:
-    li $t5,3133440
-    #Average of original image
-    li $v0,4
-    la $a0, originalAvg
-    syscall
-    li $v0,3
-    div.d $f12,$s0,$t5
-    syscall
-    #Average of brightened image
-    li $v0,4
-    la $a0, brightAvg
-    syscall
-    li $v0,3
-    div.d $f12,$s5,$t5
-    syscall
 
     #Write non-padded pixel outputs
-    bne,$zero,$s1,writeFirst
-    bne,$zero,$s2,writeSecond
+    li $t3,48
+    bne,$t3,$s1,writeFirst
+    bne,$t3,$s2,writeSecond
 
     j writeThird
 
@@ -198,7 +184,30 @@ writeThird:     #There will always be at least a 1 digit number
     syscall            # write to file
     j loopRead
 
+tooBig:
+    li $s1,50
+    li $s2,53
+    li $s3,53
+
+    j output
+
 finishedReading:
+    li $t5,3133440
+    #Average of original image
+    li $v0,4
+    la $a0, originalAvg
+    syscall
+    li $v0,3
+    #div.d $f12,$s0,$t5
+    syscall
+    #Average of brightened image
+    li $v0,4
+    la $a0, brightAvg
+    syscall
+    li $v0,3
+    #div.d $f12,$s5,$t5
+    syscall
+
     # Close input file 
     li   $v0, 16       # system call for close file
     move $a0, $s7      # file descriptor to close
@@ -210,12 +219,6 @@ finishedReading:
     syscall            # close file    
 
     j exit
-tooBig:
-    li $s1,50
-    li $s2,53
-    li $s3,53
-
-    j write
 exit:
     li $v0, 10
     syscall
