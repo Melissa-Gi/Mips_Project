@@ -197,15 +197,20 @@ finishedReading:
     li $v0,4
     la $a0, originalAvg
     syscall
-    li $v0,3
-    #div.d $f12,$s0,$t5
+    #Floating point division
+    li $v0, 2
+    mtc1 $s0, $f1
+    mtc1 $t5, $f2
+    div.s $f12,$f1,$f2
     syscall
     #Average of brightened image
     li $v0,4
     la $a0, brightAvg
     syscall
-    li $v0,3
-    #div.d $f12,$s5,$t5
+    #Floating point division
+    li $v0,2
+    mtc1 $s5, $f1
+    div.s $f12,$f1,$f2
     syscall
 
     # Close input file 

@@ -5,7 +5,7 @@
     fin:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//sample_images//house_64_in_ascii_cr.ppm"     # filename for reading (created outside the program)
     fout:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//output_greyscale.ppm"
     buffer: .space 3  
-    header: .asciiz "P2\n# Hse\n64 64\n"
+    header: .asciiz "P2\n# Hse\n64 64\n255\n"
 
 .text
 .globl main
@@ -22,7 +22,7 @@ main:
     li   $v0, 15       # system call for write to file
     move $a0, $s6      # file descriptor 
     la   $a1, header   # address of buffer from which to write
-    li   $a2, 15       # hardcoded buffer length
+    li   $a2, 19       # hardcoded buffer length
     syscall            # write to file
 
     # Open input file for reading
@@ -37,7 +37,7 @@ main:
     li   $v0, 14       # system call for write to file
     move $a0, $s7      # file descriptor 
     la $a1, buffer   # address of buffer from which to write
-    li   $a2, 15       # hardcoded buffer length
+    li   $a2, 19       # hardcoded buffer length
     syscall            # read file
 
     li $t6,3    #The number of bytes to read
@@ -76,12 +76,11 @@ loopRead:
     li   $a2, 1        
     syscall            # read file
     lb $s3, buffer
-    #case to ignore /n character for short numbers
+    #case to ignore /n character for short numbers 
+    #and pad with zeros for calculations
     li $t0, 10
     beq $t0, $s3, pad1
 
-    #deal with some counter idk, might have to change how you do paddings
-    #have some condition that makes us know that we have the 3 bytes and can go do the calculation for the average
     j doCalculation
 
 pad1:
@@ -107,27 +106,24 @@ doCalculation:
     add $s4,$s1,$s2
     add $s4,$s4,$s3
 
-    #add this RGB to the sum of the pixel
+    #add this R/G/B to the sum of the pixel
     add $s0,$s0,$s4
 
     #Increase the counter
     addi $t7,$t7,1
 
-    blt $t7,$t6, loopRead
+    blt $t7,$t6, loopRead   #only find the average for 3 RGB values
 
-    #get average of the 3 R
+    #get average for the pixel
     div $s0,$t6
     mfhi $t4 #Remainder to t4
-    mflo $s0 #quotient to s4
-    li $t6,2
-    div $s0,$t6
-    mflo $t6
-    slt $t5,$t4,$t6
-    li $t6,0
-    nor $t5,$t5,$t6
+    mflo $s0 #quotient to s0
+    li $t6,1
+    slt $t5,$t6,$t4
+
     add $s0,$s0,$t5
 
-    #Convert from decimal to ASCII
+    #Convert average from decimal to ASCII
     div $s0,$t2
     mfhi $t4 #Remainder to t4
     mflo $s0 #quotient to s0
@@ -144,16 +140,18 @@ doCalculation:
     addi $s1,$s1,48
     addi $s2,$s2,48
     addi $s3,$s3,48
-    j output
+    j output    #write average 
 
 output:
-    #zero the counter register
-    li $t7,0
-    li $t6,3    #The number of bytes to read
+    #Re-initialise variables
+    li $t7,0    #zero the counter
+    li $t6,3
+    li $s0,0    #zero the sum
 
     #Write non-padded pixel outputs
-    bne,$zero,$s1,writeFirst
-    bne,$zero,$s2,writeSecond
+    li $t3,48
+    bne,$t3,$s1,writeFirst
+    bne,$t3,$s2,writeSecond
 
     j writeThird
 
