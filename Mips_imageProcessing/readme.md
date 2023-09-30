@@ -27,33 +27,39 @@ A simulator is necessary to run the assembly language programs. QTSpim is reccom
 
   - Follow installation prompts
 * GIMP 
-  - Gimp is required to view the ppm images on machines running windows and linux. MacOS users need not download GIMP and can view the images in the Preview app built into the OS. 
+  - Gimp is required to view the ppm images on machines running Windows and Linux. MacOS users need not download GIMP and can view the images in the Preview app. 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-1. Example images have been provided for running the program with. Should you want to use your own ppm files, place them in the sample_images folder
+1. Example images have been provided for running the program with. Should you want to use your own ppm files, place them in the sample_images folder.
 2. The application is run from QTSpim
-2. And can only
-**Usage examples**: To act as a basis for a game environment
+3. These programs were developed on a machine running MacOS, which makes use of the \[LF] character with ASCII value 10 when processing the image files. 
+
+*Please Note:* Users running Windows will need to make the following changes to have the correct output.
+
+In increase_brightness.asm:
+  ```
+  line 61|     li $t0, *13*
+  ```
+In greyscale.asm:
+  ```
+  line 57|     li $t0, *13*
+  ```
+
+**Usage examples**: To create picture filters
 
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- *Start button*: used  to begin the flow of the numbered patrons into the club. 
-- *Pause button*: Used to control the liveness of the 
-- *Quit button*: Used to terminate the application
-- *Waiting Tally*: Used to indicate how many clubgoers are waiting to be admitted into the club grid at any given time. This number should change often.
-- *The grid*: A fixed number of blocks with a scaled region for dance floor and bar area
-- *Patrons*: Numbered dots act as the clubgoers which move around to simulate human behaviour.
+- *Your input image*: Once the program testing image has been chosen, navigate to the first line of each program and put the absolute path to the image as the value for fin.
+- *The 2 programs*: increase_brightness.asm and greyscale.asm are the 2 programs that will act on your sample images.
+- *Runtime*: After making necessary changes, load the program file for either task and run it in QTSpim.
+- *Your output images*: The brightened image will be called output_image.ppm and the black and white image will be called output_greyscale.ppm. 
+- *More images*: Should you wish to run either program again and/or with different images, save copies of the new images in another location, clear the contents of the output files and repeat the process. 
 
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* Professor Michelle Kuttel
 
 
 <p align="right">(<a href="#About-The-Project">back to top</a>)</p>
