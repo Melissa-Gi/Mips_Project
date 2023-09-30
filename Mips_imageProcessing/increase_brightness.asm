@@ -2,7 +2,8 @@
 #Melissa Githinji 09/2023
 
 .data
-    fin:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//sample_images//house_64_in_ascii_cr.ppm"     # filename for reading (created outside the program)
+    # filename for reading (created outside the program)
+    fin:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//sample_images//tree_64_in_ascii_lf.ppm"
     fout:   .asciiz "Users//melissagithinji//Desktop//UCT//CompSci 2002S//Architecture//myrepo//Mips_imageProcessing//output_image.ppm"
     buffer: .space 3  
     header: .asciiz "P3\n# Hse\n64 64\n255\n"

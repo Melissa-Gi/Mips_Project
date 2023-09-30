@@ -34,9 +34,12 @@ A simulator is necessary to run the assembly language programs. QTSpim is reccom
 
 1. Example images have been provided for running the program with. Should you want to use your own ppm files, place them in the sample_images folder.
 2. The application is run from QTSpim
-3. These programs were developed on a machine running MacOS, which makes use of the \[LF] character with ASCII value 10 when processing the image files. 
+3. Image headers for output images were hardcoded
+4. These programs were developed on a machine running MacOS, which makes use of the \[LF] character with ASCII value 10 when processing the image files. Lin
+5. The sample images are named to correspond with these differences so ensure the correct one is chosen for correctness. 
 
-*Please Note:* Users running Windows will need to make the following changes to have the correct output.
+
+*Please Note:* Users running Windows may need to make the following* changes to have the correct output.
 
 In increase_brightness.asm:
   ```
@@ -46,6 +49,8 @@ In greyscale.asm:
   ```
   line 57|     li $t0, *13*
   ```
+
+
 
 **Usage examples**: To create picture filters
 
@@ -58,6 +63,7 @@ In greyscale.asm:
 - *The 2 programs*: increase_brightness.asm and greyscale.asm are the 2 programs that will act on your sample images.
 - *Runtime*: After making necessary changes, load the program file for either task and run it in QTSpim.
 - *Your output images*: The brightened image will be called output_image.ppm and the black and white image will be called output_greyscale.ppm. 
+- *average pixels*: When brightening the image, the console in QTSpim will display the original and new average pixel value which should corresspond with a similar metric on GIMP.
 - *More images*: Should you wish to run either program again and/or with different images, save copies of the new images in another location, clear the contents of the output files and repeat the process. 
 
 
